@@ -1,14 +1,21 @@
 #!/bin/bash
 
-# Retrieve arguments
-domain=$1
-is_public=$2
-path=""
+app=$YNH_APP_INSTANCE_NAME
 
-sudo yunohost app checkurl $domain$path -a gitlab
-if [[ ! $? -eq 0 ]]; then
-    exit 1
-fi
+# Retrieve arguments
+domain=$YNH_APP_ARG_DOMAIN
+path=$YNH_APP_ARG_PATH
+admin=$YNH_APP_ARG_ADMIN
+is_public=$YNH_APP_ARG_IS_PUBLIC
+language=$YNH_APP_ARG_LANGUAGE
+
+ynh_app_setting_set "$app" admin "$admin"
+ynh_app_setting_set "$app" is_public "$is_public"
+ynh_app_setting_set "$app" language "$language"
+
+# Check domain/path availability
+sudo yunohost app checkurl "${domain}${path}" -a "$app" \
+|| ynh_die "Path not available: ${domain}${path}"
 
 findPort () {
     port=$1
@@ -23,14 +30,12 @@ findPort () {
    return $port
 }
 
-# Save specific settings
-sudo yunohost app setting gitlab is_public -v $is_public
 # Install dependencies
 sudo apt-get install -y curl openssh-server
 
 # Add gitlab package and install it
-#curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
-#sudo apt-get install -y gitlab-ce
+curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
+sudo apt-get install -y gitlab-ce
 
 # Find available port
 findPort 8001
