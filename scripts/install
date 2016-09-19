@@ -56,3 +56,4 @@ fi
 sudo yunohost app ssowatconf
 sudo service nginx reload
 sudo gitlab-ctl restart
+
