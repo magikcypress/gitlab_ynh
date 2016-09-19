@@ -29,8 +29,8 @@ sudo yunohost app setting gitlab is_public -v $is_public
 sudo apt-get install -y curl openssh-server
 
 # Add gitlab package and install it
-curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
-sudo apt-get install -y gitlab-ce
+#curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
+#sudo apt-get install -y gitlab-ce
 
 # Find available port
 findPort 8001
