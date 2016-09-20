@@ -38,10 +38,11 @@ CHECK_FINALPATH
 FIND_PORT "$port"
 
 # Install dependencies
-sudo apt-get install -y curl openssh-server
+sudo apt-get install -y curl openssh-server ca-certificates postfix apt-transport-https
+curl https://packages.gitlab.com/gpg.key | sudo apt-key add -
 
 # Add gitlab package and install it
-curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
+sudo curl -sS https://packages.gitlab.com/install/repositories/gitlab/raspberry-pi2/script.deb.sh | sudo bash
 sudo apt-get install -y gitlab-ce
 
 # Configure gitlab
