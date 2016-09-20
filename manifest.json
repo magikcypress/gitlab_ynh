@@ -1,17 +1,27 @@
 {
-    "name": "Gitlab",
+    "name": "Gitlab for Yunohost",
     "id": "gitlab",
+    "packaging_format": 1,
     "description": {
         "en": "Git repository management",
         "fr": "Gestion des dépôts git"
     },
-    "developer": {
+    "url": "https://gitlab.com",
+    "license": "free",
+    "maintainer": {
         "name": "Andrea Cotza",
         "email": "andrea@cotza.me"
     },
-    "multi_instance": "false",
+    "requirements": {
+        "yunohost": ">> 2.4.0"
+    },
+    "multi_instance": true,
+    "services": [
+        "nginx",
+        "postgresql"
+    ],
     "arguments": {
-        "install": [
+        "install" : [
             {
                 "name": "domain",
                 "type": "domain",
@@ -22,13 +32,41 @@
                 "example": "git.domain.org"
             },
             {
-                "name": "is_public",
+                "name": "path",
+        "type": "path",
                 "ask": {
-                    "en": "Is it a public Gitlab site ?",
-                    "fr": "Est-ce un site public ?"
+                    "en": "Choose a path for Gitlab",
+                    "fr": "Choisissez un chemin pour Gitlab"
                 },
-                "choices": ["Yes", "No"],
-                "default": "Yes"
+                "example": "/example",
+                "default": "/example"
+            },
+            {
+                "name": "admin",
+        "type": "user",
+                "ask": {
+                    "en": "Choose an admin user",
+                    "fr": "Choisissez l’administrateur"
+                },
+                "example": "johndoe"
+            },
+            {
+                "name": "is_public",
+                "type": "boolean",
+                "ask": {
+                    "en": "Is it a public application?",
+                    "fr": "Est-ce une application publique ?"
+                },
+                "default": true
+            },
+            {
+                "name": "language",
+                "ask": {
+                    "en": "Choose the application language",
+                    "fr": "Choisissez la langue de l'application"
+                },
+                "choices": ["fr", "en"],
+                "default": "fr"
             }
         ]
     }
