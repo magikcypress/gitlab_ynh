@@ -1,5 +1,12 @@
 #!/bin/bash
 
+source .fonctions
+
+CLEAN_SETUP () {
+  echo ""
+}
+TRAP_ON
+
 app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve arguments
@@ -15,22 +22,19 @@ sudo yunohost app setting $app admin -v $admin
 sudo yunohost app setting $app is_public -v $is_public
 sudo yunohost app setting $app language -v $language
 
-# Check domain/path availability
-sudo yunohost app checkurl "${domain}${path}" -a "$app" \
-|| ynh_die "Path not available: ${domain}${path}"
+# Source app helpers
+source /usr/share/yunohost/helpers
 
-findPort () {
-    port=$1
+CHECK_VAR "$app" "app name not set"
 
-    sudo yunohost app checkport $port
-    while [[ ! $? -eq 0 ]]
-        do
-            port=$(($port + 1))
-            sudo yunohost app checkport $port
-        done
+CHECK_USER "$admin"
 
-   return $port
-}
+CHECK_PATH
+CHECK_DOMAINPATH
+
+CHECK_FINALPATH
+
+FIND_PORT "8001"
 
 # Install dependencies
 sudo apt-get install -y curl openssh-server
@@ -38,9 +42,6 @@ sudo apt-get install -y curl openssh-server
 # Add gitlab package and install it
 curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
 sudo apt-get install -y gitlab-ce
-
-# Find available port
-findPort 8001
 
 # Configure gitlab
 sed -i "s@GENERATED_EXTERNAL_URL@https://$domain@g" ../conf/gitlab.rb
