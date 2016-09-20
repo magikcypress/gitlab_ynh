@@ -1,5 +1,5 @@
 {
-    "name": "Gitlab for Yunohost",
+    "name": "Gitlab",
     "id": "gitlab",
     "packaging_format": 1,
     "description": {
@@ -18,7 +18,11 @@
     "multi_instance": true,
     "services": [
         "nginx",
-        "postgresql"
+        "postgresql",
+        "redis",
+        "unicorn",
+        "logrotate",
+        "sidekiq"
     ],
     "arguments": {
         "install" : [
