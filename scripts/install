@@ -15,6 +15,7 @@ path=$YNH_APP_ARG_PATH
 admin=$YNH_APP_ARG_ADMIN
 is_public=$YNH_APP_ARG_IS_PUBLIC
 language=$YNH_APP_ARG_LANGUAGE
+port=8001
 
 sudo yunohost app setting $app domain -v $domain
 sudo yunohost app setting $app path -v $path
@@ -34,7 +35,7 @@ CHECK_DOMAINPATH
 
 CHECK_FINALPATH
 
-FIND_PORT "8001"
+FIND_PORT "$port"
 
 # Install dependencies
 sudo apt-get install -y curl openssh-server
